@@ -15,7 +15,7 @@ Quantum is freely available for use and/or modification.
 
 Demos
 -----
-A selection of demonstration notebooks is available here: [github.com/quantum/quantum-notebooks](http://github.com/quantum/quantum-notebooks).
+A selection of demonstration notebooks is available here: [github.com/diego-bernal/quantum-notebooks](http://github.com/diego-bernal/quantum-notebooks).
 
 
 REMARKS
