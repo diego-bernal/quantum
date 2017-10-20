@@ -14,4 +14,4 @@ Quantum is freely available for use and/or modification.
 
 ## REMARKS
 
-This version of Quantum pretends to replace the minimal QuTip packages.
+This version of Quantum pretends to replace the minimal QuTip packages. So,it uses the excellent Qobj class for all its purposes.
