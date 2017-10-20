@@ -6,9 +6,6 @@
 """
 This module contains the functions necessary to get the states basis and consequent
 arrays.
-
-Note the functions in these module were inspired by:
-QuTip: Quantum Toolbox in Python.
 """
 
 __all__ = ['states', 'elements', 'kets']

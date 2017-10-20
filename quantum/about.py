@@ -8,6 +8,8 @@ Command line output of information on QuTiP and dependencies.
 
 Note the functions in these module were inspired by:
 QuTip: Quantum Toolbox in Python.
+Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
+All rights reserved.
 """
 
 __all__ = ['about']

@@ -11,6 +11,11 @@ commonly found in a wide range of physics applications. Quantum is freely
 available for use and/or modification, and it can be used on Linux.
 Being free of any licensing fees, Quantum is ideal for exploring quantum
 mechanics in research as well as in the classroom.
+
+This library was inspired by:
+QuTip: Quantum Toolbox in Python.
+Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
+All rights reserved.
 """
 
 # import statements

@@ -5,6 +5,11 @@
 ###############################################################################
 """
 This module contains a collection of operations commonly used in quantum mechanics.
+
+This module was inspired by:
+QuTip: Quantum Toolbox in Python.
+Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
+All rights reserved.
 """
 
 __all__ = ['dag', 'isherm', 'expm']

@@ -9,6 +9,8 @@ quantum optics operators.
 
 Note the functions in these module were inspired by:
 QuTip: Quantum Toolbox in Python.
+Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
+All rights reserved.
 """
 
 __all__ = ['destroy_a_1', 'destroy_x_1', 'create_a_1', 'create_x_1', 'num_a_1',

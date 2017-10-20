@@ -5,9 +5,6 @@
 ###############################################################################
 """
 Information about the Quantum package.
-
-Note the functions in these module and the whole Quantum package were inspired by:
-QuTip: Quantum Toolbox in Python.
 """
 
 
