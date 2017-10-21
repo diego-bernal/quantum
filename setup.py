@@ -1,16 +1,15 @@
 #!/usr/bin/env python
+###############################################################################
+# This file is part of Quantum.
+#
+#    Copyright (c) 2017 and later, Diego Nicolas Bernal-Garcia.
+#    All rights reserved.
+###############################################################################
 """Quantum: Quantum dynamics solver
 
-Quantum is open-source software for simulating the dynamics of closed and open
-quantum systems. The Quantum library uses the excellent Numpy, Scipy, and
-Cython packages as numerical backend, and graphical output is provided by
-Matplotlib. Quantum aims to provide user-friendly and efficient numerical
-simulations of a wide variety of quantum mechanical problems, including those
-with Hamiltonians and/or collapse operators with arbitrary time-dependence,
-commonly found in a wide range of physics applications. Quantum is freely
-available for use and/or modification, and it can be used on Linux.
-Being free of any licensing fees, Quantum is ideal for exploring quantum
-mechanics in research as well as in the classroom.
+Quantum is open-source software for calculating the dynamics of quantum systems.
+The Quantum library is strongly based and inspired by QuTip: Quantum Toolbox in Python.
+It takes advantange of the Numpy, Scipy, and Cython packages, as well as Matplotlib.
 
 This library was inspired by:
 QuTip: Quantum Toolbox in Python.
