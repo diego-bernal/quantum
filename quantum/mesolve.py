@@ -7,17 +7,13 @@
 This module provides solvers for the Lindblad master equation and von Neumann
 equation.
 
-Note the functions in these module were inspired by:
+Note that the functions in these module were inspired by:
 QuTip: Quantum Toolbox in Python.
 Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
 All rights reserved.
 """
 
-
 __all__ = ['mesolve', 'odesolve']
-
-
-
 
 
 import os
@@ -29,9 +25,7 @@ import scipy.integrate
 import warnings
 import qutip.settings as qset
 from qutip.qobj import Qobj, isket, isoper, issuper
-#from qutip.superoperator import spre, spost, liouvillian, mat2vec, vec2mat
-from qutip.superoperator import mat2vec, vec2mat
-from quantum.superoperator import spre, spost, liouvillian
+from quantum.superoperator import mat2vec, vec2mat, spre, spost, liouvillian
 from qutip.expect import expect_rho_vec
 from qutip.solver import Options, Result, config, _solver_safety_check
 from qutip.cy.spmatfuncs import cy_ode_rhs, cy_ode_rho_func_td

@@ -13,8 +13,10 @@ Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
 All rights reserved.
 """
 
+
 __all__ = ['liouvillian', 'lindblad_dissipator', 'spost', 'spre', 'operator_to_vector',
 'vector_to_operator', 'mat2vec', 'vec2mat']
+
 
 import scipy.sparse as sp
 import numpy as np
@@ -135,7 +137,8 @@ def spre(A):
     return S
 
 
-# In the following, the uncommented lines correspond to the QuTip original assignations
+# In the following, the uncommented lines correspond to the QuTip original
+# assignations
 #------------------------------------------------------------------------------
 def operator_to_vector(op):
     """

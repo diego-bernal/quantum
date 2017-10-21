@@ -1,35 +1,17 @@
-# This file is part of QuTiP: Quantum Toolbox in Python.
+# This file is part of Quantum.
 #
-#    Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
+#    Copyright (c) 2017 and later, Diego Nicolas Bernal-Garcia.
 #    All rights reserved.
-#
-#    Redistribution and use in source and binary forms, with or without
-#    modification, are permitted provided that the following conditions are
-#    met:
-#
-#    1. Redistributions of source code must retain the above copyright notice,
-#       this list of conditions and the following disclaimer.
-#
-#    2. Redistributions in binary form must reproduce the above copyright
-#       notice, this list of conditions and the following disclaimer in the
-#       documentation and/or other materials provided with the distribution.
-#
-#    3. Neither the name of the QuTiP: Quantum Toolbox in Python nor the names
-#       of its contributors may be used to endorse or promote products derived
-#       from this software without specific prior written permission.
-#
-#    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-#    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-#    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-#    PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-#    HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-#    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-#    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-#    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-#    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-#    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-#    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###############################################################################
+"""
+This module provides solvers for the Lindblad master equation and von Neumann
+equation.
+
+Note that the functions in these module were inspired by:
+QuTip: Quantum Toolbox in Python.
+Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
+All rights reserved.
+"""
 
 __all__ = ['correlation_2op_1t', 'correlation_2op_2t', 'correlation_3op_1t',
            'correlation_3op_2t', 'coherence_function_g1',
@@ -123,8 +105,6 @@ def correlation_2op_1t(H, state0, taulist, c_ops, a_op, b_op,
 
     """
 
-    if debug:
-        print(inspect.stack()[0][3])
 
     if reverse:
         A_op = a_op
@@ -198,6 +178,7 @@ def correlation_2op_2t(H, state0, tlist, taulist, c_ops, a_op, b_op,
     See, Gardiner, Quantum Noise, Section 5.2.
 
     """
+
 
     if debug:
         print(inspect.stack()[0][3])
@@ -574,7 +555,7 @@ def spectrum_correlation_fft(tlist, y):
     dt = tlist[1] - tlist[0]
     if not np.allclose(np.diff(tlist), dt*np.ones(N-1,dtype=float)):
         raise Exception('tlist must be equally spaced for FFT.')
-    
+
     F = scipy.fftpack.fft(y)
     # calculate the frequencies for the components in F
     f = scipy.fftpack.fftfreq(N, dt)
@@ -806,7 +787,7 @@ def correlation_4op_1t(H, state0, taulist, c_ops, a_op, b_op, c_op, d_op,
     References
     ----------
     See, Gardiner, Quantum Noise, Section 5.2.
-                       
+
     .. note:: Deprecated in QuTiP 3.1
               Use correlation_3op_1t() instead.
 
@@ -1284,10 +1265,10 @@ def _correlation_mc_2t(H, state0, tlist, taulist, c_ops, a_op, b_op, c_op,
                     dtype=corr_mat.dtype
                 )
                 corr_mat[t_idx, :] += corr_mat_add
-                    
+
         if t_idx == 1:
             options.rhs_reuse = True
-    
+
     if config.tdname:
         _cython_build_cleanup(config.tdname)
     rhs_clear()
