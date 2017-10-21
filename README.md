@@ -3,8 +3,7 @@ Quantum: Quantum dynamics solver
 
 [D. N. Bernal-García](http://github.com/diego-bernal)
 
-Quantum is open-source software for calculating the dynamics of quantum systems. The Quantum library is strongly based and inspired by QuTip: Quantum Toolbox in Python. Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
-All rights reserved. It takes advantange of the Numpy, Scipy, and Cython packages, as well as Matplotlib.
+Quantum is open-source software for calculating the dynamics of quantum systems. The Quantum library is strongly based and inspired by QuTip: Quantum Toolbox in Python. It takes advantange of the Numpy, Scipy, and Cython packages, as well as Matplotlib.
 
 Quantum differs from QuTip in two essencial features:
 1. It allows truncation by excitation manifold for certain specific problems.
