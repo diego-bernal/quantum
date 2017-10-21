@@ -21,4 +21,4 @@ A selection of demonstration notebooks is available here: [github.com/diego-bern
 REMARKS
 -------
 
-This version of Quantum pretends to replace the minimal QuTip packages. So,it uses the excellent Qobj class for all its purposes.
+This version of Quantum pretends to replace the minimal QuTip packages. So, it uses the excellent Qobj class for all its purposes.
