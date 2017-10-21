@@ -1,7 +1,65 @@
+# -*- coding: utf-8 -*-
 # This file is part of Quantum.
 #
-#    Copyright (c) 2017 and later, Diego Nicolas Bernal-Garcia.
+#    Copyright (c) 2017, Diego Nicolás Bernal-García
 #    All rights reserved.
+#
+#    Redistribution and use in source and binary forms, with or without
+#    modification, are permitted provided that the following conditions are
+#    met:
+#
+#    * Redistributions of source code must retain the above copyright notice,
+#      this list of conditions and the following disclaimer.
+#
+#    * Redistributions in binary form must reproduce the above copyright
+#      notice, this list of conditions and the following disclaimer in the
+#      documentation and/or other materials provided with the distribution.
+#
+#    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+#    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+#    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+#    PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+#    HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+#    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+#    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+#    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+#    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+###############################################################################
+#
+# The functions in these module were inspired by:
+# QuTiP: Quantum Toolbox in Python.
+#
+#    Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
+#    All rights reserved.
+#
+#    Redistribution and use in source and binary forms, with or without
+#    modification, are permitted provided that the following conditions are
+#    met:
+#
+#    1. Redistributions of source code must retain the above copyright notice,
+#       this list of conditions and the following disclaimer.
+#
+#    2. Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#
+#    3. Neither the name of the QuTiP: Quantum Toolbox in Python nor the names
+#       of its contributors may be used to endorse or promote products derived
+#       from this software without specific prior written permission.
+#
+#    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+#    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+#    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+#    PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+#    HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+#    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+#    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+#    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+#    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###############################################################################
 """
 This module provides solvers for the Lindblad master equation and von Neumann
@@ -528,44 +586,6 @@ def spectrum(H, wlist, c_ops, a_op, b_op, solver="es", use_pinv=False):
                          "%s (use es or pi)." % solver)
 
 
-def spectrum_correlation_fft(tlist, y):
-    """
-    Calculate the power spectrum corresponding to a two-time correlation
-    function using FFT.
-
-    Parameters
-    ----------
-    tlist : array_like
-        list/array of times :math:`t` which the correlation function is given.
-    y : array_like
-        list/array of correlations corresponding to time delays :math:`t`.
-
-    Returns
-    -------
-    w, S : tuple
-        Returns an array of angular frequencies 'w' and the corresponding
-        one-sided power spectrum 'S(w)'.
-
-    """
-
-    if debug:
-        print(inspect.stack()[0][3])
-    tlist = np.asarray(tlist)
-    N = tlist.shape[0]
-    dt = tlist[1] - tlist[0]
-    if not np.allclose(np.diff(tlist), dt*np.ones(N-1,dtype=float)):
-        raise Exception('tlist must be equally spaced for FFT.')
-
-    F = scipy.fftpack.fft(y)
-    # calculate the frequencies for the components in F
-    f = scipy.fftpack.fftfreq(N, dt)
-
-    # select only indices for elements that corresponds
-    # to positive frequencies
-    indices = np.where(f > 0.0)
-
-    return 2 * np.pi * f[indices], 2 * dt * np.real(F[indices])
-
 
 # -----------------------------------------------------------------------------
 # LEGACY API
@@ -728,275 +748,56 @@ def correlation(H, state0, tlist, taulist, c_ops, a_op, b_op,
                               options=options)
 
 
-def correlation_4op_1t(H, state0, taulist, c_ops, a_op, b_op, c_op, d_op,
-                       solver="me", args={},
-                       options=Options(ntraj=[20, 100])):
-    """
-    Calculate the four-operator two-time correlation function:
-    :math:`\left<A(t)B(t+\\tau)C(t+\\tau)D(t)\\right>`
-    along one time axis using the quantum regression theorem and the
-    evolution solver indicated by the `solver` parameter.
-
-    Note: it is not possibly to calculate a physically meaningful correlation
-    of this form where :math:`\\tau<0`.
-
-    Parameters
-    ----------
-    H : Qobj
-        system Hamiltonian, may be time-dependent for solver choice of `me` or
-        `mc`.
-    rho0 : Qobj
-        Initial state density matrix :math:`\\rho(t_0)` or state vector
-        :math:`\\psi(t_0)`. If 'state0' is 'None', then the steady state will
-        be used as the initial state. The 'steady-state' is only implemented
-        for the `me` and `es` solvers.
-    taulist : array_like
-        list of times for :math:`\\tau`. taulist must be positive and contain
-        the element `0`.
-    c_ops : list
-        list of collapse operators, may be time-dependent for solver choice of
-        `me` or `mc`.
-
-    a_op : Qobj
-        operator A.
-
-    b_op : Qobj
-        operator B.
-
-    c_op : Qobj
-        operator C.
-
-    d_op : Qobj
-        operator D.
-
-    solver : str
-        choice of solver (`me` for master-equation, `mc` for Monte Carlo, and
-        `es` for exponential series).
-
-    options : Options
-        solver options class. `ntraj` is taken as a two-element list because
-        the `mc` correlator calls `mcsolve()` recursively; by default,
-        `ntraj=[20, 100]`. `mc_corr_eps` prevents divide-by-zero errors in
-        the `mc` correlator; by default, `mc_corr_eps=1e-10`.
-
-    Returns
-    -------
-    corr_vec : array
-        An array of correlation values for the times specified by `taulist`.
-
-    References
-    ----------
-    See, Gardiner, Quantum Noise, Section 5.2.
-
-    .. note:: Deprecated in QuTiP 3.1
-              Use correlation_3op_1t() instead.
-
-    """
-
-    warn("correlation_4op_1t() now legacy, please use correlation_3op_1t()",
-         FutureWarning)
-    warn("the reverse argument has been removed as it did not contain any" +
-         "new physical information", DeprecationWarning)
-
-    if debug:
-        print(inspect.stack()[0][3])
-
-    return correlation_3op_1t(H, state0, taulist, c_ops,
-                              a_op, b_op * c_op, d_op,
-                              solver=solver, args=args, options=options)
-
-
-def correlation_4op_2t(H, state0, tlist, taulist, c_ops,
-                       a_op, b_op, c_op, d_op, solver="me", args={},
-                       options=Options(ntraj=[20, 100])):
-    """
-    Calculate the four-operator two-time correlation function:
-    :math:`\left<A(t)B(t+\\tau)C(t+\\tau)D(t)\\right>`
-    along two time axes using the quantum regression theorem and the
-    evolution solver indicated by the `solver` parameter.
-
-    Note: it is not possibly to calculate a physically meaningful correlation
-    of this form where :math:`\\tau<0`.
-
-    Parameters
-    ----------
-
-    H : Qobj
-        system Hamiltonian, may be time-dependent for solver choice of `me` or
-        `mc`.
-
-    rho0 : Qobj
-        Initial state density matrix :math:`\\rho_0` or state vector
-        :math:`\\psi_0`. If 'state0' is 'None', then the steady state will
-        be used as the initial state. The 'steady-state' is only implemented
-        for the `me` and `es` solvers.
-
-    tlist : array_like
-        list of times for :math:`t`. tlist must be positive and contain the
-        element `0`. When taking steady-steady correlations only one tlist
-        value is necessary, i.e. when :math:`t \\rightarrow \\infty`; here
-        tlist is automatically set, ignoring user input.
-
-    taulist : array_like
-        list of times for :math:`\\tau`. taulist must be positive and contain
-        the element `0`.
-
-    c_ops : list
-        list of collapse operators, may be time-dependent for solver choice of
-        `me` or `mc`.
-
-    a_op : Qobj
-        operator A.
-
-    b_op : Qobj
-        operator B.
-
-    c_op : Qobj
-        operator C.
-
-    d_op : Qobj
-        operator D.
-
-    solver : str
-        choice of solver (`me` for master-equation, `mc` for Monte Carlo, and
-        `es` for exponential series).
-
-    options : Options
-        solver options class. `ntraj` is taken as a two-element list because
-        the `mc` correlator calls `mcsolve()` recursively; by default,
-        `ntraj=[20, 100]`. `mc_corr_eps` prevents divide-by-zero errors in
-        the `mc` correlator; by default, `mc_corr_eps=1e-10`.
-
-    Returns
-    -------
-
-    corr_mat : array
-        An 2-dimensional array (matrix) of correlation values for the times
-        specified by `tlist` (first index) and `taulist` (second index). If
-        `tlist` is `None`, then a 1-dimensional array of correlation values
-        is returned instead.
-
-    References
-    ----------
-
-    See, Gardiner, Quantum Noise, Section 5.2.
-
-    """
-
-    warn("correlation_4op_2t() now legacy, please use correlation_3op_2t()",
-         FutureWarning)
-    warn("the reverse argument has been removed as it did not contain any" +
-         "new physical information", DeprecationWarning)
-
-    if debug:
-        print(inspect.stack()[0][3])
-
-    return correlation_3op_2t(H, state0, tlist, taulist, c_ops,
-                              a_op, b_op * c_op, d_op,
-                              solver=solver, args=args, options=options)
 
 
 # spectrum
 
-def spectrum_ss(H, wlist, c_ops, a_op, b_op):
+def spectrum(H, wlist, c_ops, a_op, b_op, solver="es", use_pinv=False):
     """
     Calculate the spectrum of the correlation function
     :math:`\lim_{t \\to \\infty} \left<A(t+\\tau)B(t)\\right>`,
     i.e., the Fourier transform of the correlation function:
-
     .. math::
-
         S(\omega) = \int_{-\infty}^{\infty}
         \lim_{t \\to \\infty} \left<A(t+\\tau)B(t)\\right>
         e^{-i\omega\\tau} d\\tau.
-
-    using an eseries based solver Note: this spectrum is only defined for
-    stationary statistics (uses steady state rho0).
-
+    using the solver indicated by the `solver` parameter. Note: this spectrum
+    is only defined for stationary statistics (uses steady state rho0)
     Parameters
     ----------
-
     H : :class:`qutip.qobj`
         system Hamiltonian.
-
     wlist : array_like
         list of frequencies for :math:`\\omega`.
-
-    c_ops : *list* of :class:`qutip.qobj`
+    c_ops : list
         list of collapse operators.
-
-    a_op : :class:`qutip.qobj`
+    a_op : Qobj
         operator A.
-
-    b_op : :class:`qutip.qobj`
+    b_op : Qobj
         operator B.
-
-    use_pinv : *bool*
-        If `True` use numpy's `pinv` method, otherwise use a generic solver.
-
+    solver : str
+        choice of solver (`es` for exponential series and
+        `pi` for psuedo-inverse).
+    use_pinv : bool
+        For use with the `pi` solver: if `True` use numpy's pinv method,
+        otherwise use a generic solver.
     Returns
     -------
-
     spectrum : array
         An array with spectrum :math:`S(\omega)` for the frequencies
         specified in `wlist`.
-
     """
 
-    warn("spectrum_ss() now legacy, please use spectrum()", FutureWarning)
+    if debug:
+        print(inspect.stack()[0][3])
 
-    return spectrum(H, wlist, c_ops, a_op, b_op, solver="es")
-
-
-def spectrum_pi(H, wlist, c_ops, a_op, b_op, use_pinv=False):
-    """
-    Calculate the spectrum of the correlation function
-    :math:`\lim_{t \\to \\infty} \left<A(t+\\tau)B(t)\\right>`,
-    i.e., the Fourier transform of the correlation function:
-
-    .. math::
-
-        S(\omega) = \int_{-\infty}^{\infty}
-        \lim_{t \\to \\infty} \left<A(t+\\tau)B(t)\\right>
-        e^{-i\omega\\tau} d\\tau.
-
-    using a psuedo-inverse method. Note: this spectrum is only defined for
-    stationary statistics (uses steady state rho0)
-
-    Parameters
-    ----------
-
-    H : :class:`qutip.qobj`
-        system Hamiltonian.
-
-    wlist : array_like
-        list of frequencies for :math:`\\omega`.
-
-    c_ops : *list* of :class:`qutip.qobj`
-        list of collapse operators.
-
-    a_op : :class:`qutip.qobj`
-        operator A.
-
-    b_op : :class:`qutip.qobj`
-        operator B.
-
-    use_pinv : *bool*
-        If `True` use numpy's pinv method, otherwise use a generic solver.
-
-    Returns
-    -------
-
-    spectrum : array
-        An array with spectrum :math:`S(\omega)` for the frequencies
-        specified in `wlist`.
-
-    """
-
-    warn("spectrum_pi() now legacy, please use spectrum()", FutureWarning)
-
-    return spectrum(H, wlist, c_ops, a_op, b_op,
-                    solver="pi", use_pinv=use_pinv)
+    if solver == "es":
+        return _spectrum_es(H, wlist, c_ops, a_op, b_op)
+    elif solver == "pi":
+        return _spectrum_pi(H, wlist, c_ops, a_op, b_op, use_pinv)
+    else:
+        raise ValueError("Unrecognized choice of solver" +
+                         "%s (use es or pi)." % solver)
 
 
 # -----------------------------------------------------------------------------
