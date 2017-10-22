@@ -8,7 +8,7 @@ Generates an array with the states for the current problem:
 
 .. math::
 
-\\{ | \\alpha, m \\rangle \\}
+    { | \\alpha, m \\rangle }
 
 being the first entry the corresponding to the atomic qubit, and the second one 
 the cavity photon field.
@@ -27,5 +27,4 @@ N : int
 Returns
 -------
 States : numpy array
-
 
