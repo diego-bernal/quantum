@@ -39,7 +39,17 @@ import numpy as np
 from qutip.states import basis
 
 def states(N):
-    """Generates an array with the states for the current problem.
+    """Generates an array with the states for the current problem:
+    .. math::
+    \\{ | \\alpha, m; \\beta, n \rangle\\}
+    being the first two entries, atom and photon field for the first cavity, and the
+    second ones the corresponding for the second cavity.
+    
+    .. note::
+    
+        This predefined function could be useful for an easy construction of the state 
+        basis, nevertheless, any state basis could be constructed and serve as a basis 
+        for the quantum operators.
 
     Parameters
     ----------
@@ -49,6 +59,8 @@ def states(N):
     Returns
     -------
     states : array
+    
+
     """
     s = []
     for n in range(N+1):
