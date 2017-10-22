@@ -1,8 +1,6 @@
 #!/usr/bin/env python
+###############################################################################
 # -*- coding: utf-8 -*-
-
-
-
 # This file is part of Quantum.
 #
 #    Copyright (c) 2017, Diego Nicolás Bernal-García
