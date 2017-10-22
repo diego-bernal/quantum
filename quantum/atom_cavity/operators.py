@@ -30,11 +30,6 @@
 """
 This module contains a collection of functions used to construct the fundamental
 quantum optics operators.
-
-Note the functions in these module were inspired by:
-QuTip: Quantum Toolbox in Python.
-Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
-All rights reserved.
 """
 
 __all__ = ['destroy_a', 'destroy_x', 'create_a', 'create_x', 'num_a', 'num_x']
