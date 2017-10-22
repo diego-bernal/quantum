@@ -7,7 +7,6 @@ quantum.atom_cavity.states(N)
 Generates an array with the states for the current problem:
 
 .. math::
-
     { | \alpha, m \rangle }
 
 being the first entry the corresponding to the atomic qubit, and the second one 
