@@ -17,7 +17,7 @@ A selection of demonstration notebooks is available here: [github.com/diego-bern
 
 License
 -------
-[![license](https://img.shields.io/badge/license-New%20BSD-blue.svg)](http://en.wikipedia.org/wiki/BSD_licenses)
+[![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 
 You are free to use this software, with or without modification, provided that the conditions listed in the LICENSE file are satisfied.
 
