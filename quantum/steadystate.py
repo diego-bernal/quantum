@@ -81,16 +81,18 @@ import scipy.linalg as la
 from scipy.sparse.linalg import (use_solver, splu, spilu, spsolve, eigs)
 from scipy.sparse.linalg import (LinearOperator, gmres, lgmres, bicgstab)
 
-from quantum.superoperator import liouvillian, vec2mat, spre
+from quantum.superoperator import (liouvillian, vec2mat, mat2vec, spre,
+                                   operator_to_vector)
 
 from qutip.qobj import Qobj, issuper, isoper
-from qutip.sparse import sp_permute, sp_bandwidth, sp_reshape, sp_profile
-
 from qutip.sparse import (sp_permute, sp_bandwidth, sp_reshape,
                             sp_profile)
 from qutip.cy.spmath import zcsr_kron
 from qutip.graph import reverse_cuthill_mckee, weighted_bipartite_matching
-from qutip import (mat2vec, tensor, identity, operator_to_vector)
+
+
+
+from qutip import (tensor, identity, operator_to_vector)
 import qutip.settings as settings
 from qutip.utilities import _version2int
 from qutip.cy.spconvert import dense2D_to_fastcsr_fmode

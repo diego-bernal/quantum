@@ -197,6 +197,8 @@ def spre(A):
 
 # In the following, the uncommented lines correspond to the QuTip original
 # assignations
+# The creation of a vector from a matrix in QuTip approach is ordering in
+# columns, while our approach is to order in rows.
 #------------------------------------------------------------------------------
 def operator_to_vector(op):
     """
