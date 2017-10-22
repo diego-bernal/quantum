@@ -70,6 +70,8 @@ collapse operators.
 __all__ = ['steadystate', 'steady', 'build_preconditioner',
            'pseudo_inverse']
 
+
+
 import warnings
 import time
 import scipy
