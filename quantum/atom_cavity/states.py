@@ -52,7 +52,7 @@ def states(N):
     """
     s = []
     for n in range(N+1):
-        for j in range(N):
+        for j in range(n):
             for i in range(2):
                 if (i + j == n):
                     s.append((i,j))
