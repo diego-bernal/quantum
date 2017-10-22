@@ -92,7 +92,7 @@ from qutip.graph import reverse_cuthill_mckee, weighted_bipartite_matching
 
 
 
-from qutip import (tensor, identity, operator_to_vector)
+from qutip import (tensor, identity)
 import qutip.settings as settings
 from qutip.utilities import _version2int
 from qutip.cy.spconvert import dense2D_to_fastcsr_fmode
