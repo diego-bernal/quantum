@@ -62,7 +62,7 @@
 #    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###############################################################################
 """
-Module contains functions for solving for the steady state density matrix of
+This module contains functions for solving for the steady state density matrix of
 open quantum systems defined by a Liouvillian or Hamiltonian and a list of
 collapse operators.
 """
@@ -78,14 +78,14 @@ from numpy.linalg import svd
 from scipy import prod
 import scipy.sparse as sp
 import scipy.linalg as la
-from scipy.sparse.linalg import (use_solver, splu, spilu, spsolve, eigs,
-                                 LinearOperator, gmres, lgmres, bicgstab)
-from qutip.qobj import Qobj, issuper, isoper
+from scipy.sparse.linalg import (use_solver, splu, spilu, spsolve, eigs)
+from scipy.sparse.linalg import (LinearOperator, gmres, lgmres, bicgstab)
 
-from qutip.superoperator import liouvillian, vec2mat, spre
+from quantum.superoperator import liouvillian, vec2mat, spre
+
+from qutip.qobj import Qobj, issuper, isoper
 from qutip.sparse import sp_permute, sp_bandwidth, sp_reshape, sp_profile
 
-from qutip.superoperator import liouvillian, vec2mat
 from qutip.sparse import (sp_permute, sp_bandwidth, sp_reshape,
                             sp_profile)
 from qutip.cy.spmath import zcsr_kron
@@ -95,9 +95,6 @@ import qutip.settings as settings
 from qutip.utilities import _version2int
 from qutip.cy.spconvert import dense2D_to_fastcsr_fmode
 
-import qutip.logging_utils
-logger = qutip.logging_utils.get_logger()
-logger.setLevel('DEBUG')
 
 # Load MKL spsolve if avaiable
 if settings.has_mkl:
