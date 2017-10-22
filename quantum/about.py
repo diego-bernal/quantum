@@ -87,7 +87,7 @@ def about():
     print("")
     print("Quantum: Quantum dynamics solver")
     print("Copyright (c) 2017 and later.")
-    print(("D. N. Bernal-Garcia"))
+    print(("D. N. Bernal-García"))
     print("")
     print("Quantum Version:    %s" % __version__)
     print("QuTiP Version:      %s" % qutip.__version__)
