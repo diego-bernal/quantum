@@ -4,9 +4,9 @@ Atom - Cavity
 
 quantum.atom_cavity.states()
 ----------------------------
-Generates an array with the states for the current problem.
+Generates an array with the states for the current problem:
 .. math::
-\\{ | \\alpha, m\\}
+\\{ | \\alpha, m \\rangle \\}
 being the first entry the corresponding to the atomic qubit, and the second one 
 the cavity photon field.
 
@@ -20,6 +20,7 @@ Parameters
 ----------
 N : int
     Maximum excitation manifold.
+    
 Returns
 -------
 states : numpy array
