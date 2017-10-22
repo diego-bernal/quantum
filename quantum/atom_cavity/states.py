@@ -49,6 +49,12 @@ def states(N):
     Returns
     -------
     states : array
+    
+    Notes
+    -----
+    This predefined function could be useful for an easy construction of the state 
+    basis, nevertheless, any state basis could be constructed and serve as a basis 
+    for the quantum operators.
     """
     s = []
     for n in range(N+1):
