@@ -284,7 +284,6 @@ def mesolve(H, rho0, tlist, c_ops=[], e_ops=[], args={}, options=None,
     #check if should use OPENMP
     check_use_openmp(options)
 
-
     res = None
 
     #
