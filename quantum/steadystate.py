@@ -70,8 +70,6 @@ collapse operators.
 __all__ = ['steadystate', 'steady', 'build_preconditioner',
            'pseudo_inverse']
 
-
-
 import warnings
 import time
 import scipy
@@ -87,13 +85,9 @@ from quantum.superoperator import (liouvillian, vec2mat, mat2vec, spre,
                                    operator_to_vector)
 
 from qutip.qobj import Qobj, issuper, isoper
-from qutip.sparse import (sp_permute, sp_bandwidth, sp_reshape,
-                            sp_profile)
+from qutip.sparse import (sp_permute, sp_bandwidth, sp_reshape, sp_profile)
 from qutip.cy.spmath import zcsr_kron
 from qutip.graph import reverse_cuthill_mckee, weighted_bipartite_matching
-
-
-
 from qutip import (tensor, identity)
 import qutip.settings as settings
 from qutip.utilities import _version2int
@@ -116,6 +110,7 @@ def _empty_info_dict():
                 'drop_tol': None, 'permc_spec': None, 'weight': None}
 
     return def_info
+
 
 def _default_steadystate_args():
     def_args = {'method': 'direct', 'sparse': True, 'use_rcm': False,
@@ -225,7 +220,7 @@ def steadystate(A, c_op_list=[], **kwargs):
             ss_args[key] = kwargs[key]
         else:
             raise Exception(
-                "Invalid keyword argument '"+key+"' passed to steadystate.")
+                "Invalid keyword argument '" + key + "' passed to steadystate.")
 
     # Set column perm to NATURAL if using RCM and not specified by user
     if ss_args['use_rcm'] and ('permc_spec' not in kwargs.keys()):
@@ -257,7 +252,7 @@ def steadystate(A, c_op_list=[], **kwargs):
         return _steadystate_svd_dense(A, ss_args)
 
     elif ss_args['method'] in ['power', 'power-gmres',
-                            'power-lgmres', 'power-bicgstab']:
+                               'power-lgmres', 'power-bicgstab']:
         return _steadystate_power(A, ss_args)
 
     else:
@@ -291,15 +286,15 @@ def _steadystate_LU_liouvillian(L, ss_args, has_mkl=0):
     form = 'csr'
     if has_mkl:
         L = L.data + sp.csr_matrix(
-            (ss_args['weight']*np.ones(n), (np.zeros(n), [nn * (n + 1)
-             for nn in range(n)])),
-             shape=(n ** 2, n ** 2))
+            (ss_args['weight'] * np.ones(n), (np.zeros(n), [nn * (n + 1)
+                                                            for nn in range(n)])),
+            shape=(n ** 2, n ** 2))
     else:
         form = 'csc'
         L = L.data.tocsc() + sp.csc_matrix(
-            (ss_args['weight']*np.ones(n), (np.zeros(n), [nn * (n + 1)
-             for nn in range(n)])),
-             shape=(n ** 2, n ** 2))
+            (ss_args['weight'] * np.ones(n), (np.zeros(n), [nn * (n + 1)
+                                                            for nn in range(n)])),
+            shape=(n ** 2, n ** 2))
 
     if settings.debug:
         old_band = sp_bandwidth(L)[0]
@@ -316,7 +311,7 @@ def _steadystate_LU_liouvillian(L, ss_args, has_mkl=0):
         _wbm_end = time.time()
         L = sp_permute(L, perm, [], form)
         ss_args['info']['perm'].append('wbm')
-        ss_args['info']['wbm_time'] = _wbm_end-_wbm_start
+        ss_args['info']['wbm_time'] = _wbm_end - _wbm_start
         if settings.debug:
             wbm_band = sp_bandwidth(L)[0]
             logger.debug('WBM bandwidth: %i' % wbm_band)
@@ -330,21 +325,21 @@ def _steadystate_LU_liouvillian(L, ss_args, has_mkl=0):
         rev_perm = np.argsort(perm2)
         L = sp_permute(L, perm2, perm2, form)
         ss_args['info']['perm'].append('rcm')
-        ss_args['info']['rcm_time'] = _rcm_end-_rcm_start
+        ss_args['info']['rcm_time'] = _rcm_end - _rcm_start
         if settings.debug:
             rcm_band = sp_bandwidth(L)[0]
             rcm_pro = sp_profile(L)[0]
             logger.debug('RCM bandwidth: %i' % rcm_band)
             logger.debug('Bandwidth reduction factor: %f' %
-                    (old_band/rcm_band))
+                         (old_band / rcm_band))
             logger.debug('Profile reduction factor: %f' %
-                    (old_pro/rcm_pro))
+                         (old_pro / rcm_pro))
     L.sort_indices()
     return L, perm, perm2, rev_perm, ss_args
 
 
 def steady(L, maxiter=10, tol=1e-12, itertol=1e-15, method='solve',
-            use_precond=False):
+           use_precond=False):
     """
     Deprecated. See steadystate instead.
     """
@@ -370,7 +365,8 @@ def _steadystate_direct_sparse(L, ss_args):
     else:
         has_mkl = 0
 
-    L, perm, perm2, rev_perm, ss_args = _steadystate_LU_liouvillian(L, ss_args, has_mkl)
+    L, perm, perm2, rev_perm, ss_args = _steadystate_LU_liouvillian(
+        L, ss_args, has_mkl)
     if np.any(perm):
         b = b[np.ix_(perm,)]
     if np.any(perm2):
@@ -397,23 +393,23 @@ def _steadystate_direct_sparse(L, ss_args):
             U_nnz = lu.U.nnz
             ss_args['info']['l_nnz'] = L_nnz
             ss_args['info']['u_nnz'] = U_nnz
-            ss_args['info']['lu_fill_factor'] = (L_nnz + U_nnz)/L.nnz
+            ss_args['info']['lu_fill_factor'] = (L_nnz + U_nnz) / L.nnz
             if settings.debug:
                 logger.debug('L NNZ: %i ; U NNZ: %i' % (L_nnz, U_nnz))
-                logger.debug('Fill factor: %f' % ((L_nnz + U_nnz)/orig_nnz))
+                logger.debug('Fill factor: %f' % ((L_nnz + U_nnz) / orig_nnz))
 
-    else: # Use MKL solver
-        if len(ss_args['info']['perm']) !=0:
+    else:  # Use MKL solver
+        if len(ss_args['info']['perm']) != 0:
             in_perm = np.arange(n**2, dtype=np.int32)
         else:
             in_perm = None
         _direct_start = time.time()
-        v = mkl_spsolve(L, b, perm = in_perm, verbose = ss_args['verbose'])
+        v = mkl_spsolve(L, b, perm=in_perm, verbose=ss_args['verbose'])
         _direct_end = time.time()
-        ss_args['info']['solution_time'] = _direct_end-_direct_start
+        ss_args['info']['solution_time'] = _direct_end - _direct_start
 
     if ss_args['return_info']:
-        ss_args['info']['residual_norm'] = la.norm(b - L*v, np.inf)
+        ss_args['info']['residual_norm'] = la.norm(b - L * v, np.inf)
 
     if ss_args['use_rcm']:
         v = v[np.ix_(rev_perm,)]
@@ -440,13 +436,13 @@ def _steadystate_direct_dense(L, ss_args):
     b[0] = ss_args['weight']
 
     L = L.data.todense()
-    L[0, :] = np.diag(ss_args['weight']*np.ones(n)).reshape((1, n ** 2))
+    L[0, :] = np.diag(ss_args['weight'] * np.ones(n)).reshape((1, n ** 2))
     _dense_start = time.time()
     v = np.linalg.solve(L, b)
     _dense_end = time.time()
-    ss_args['info']['solution_time'] = _dense_end-_dense_start
+    ss_args['info']['solution_time'] = _dense_end - _dense_start
     if ss_args['return_info']:
-        ss_args['info']['residual_norm'] = la.norm(b - L*v, np.inf)
+        ss_args['info']['residual_norm'] = la.norm(b - L * v, np.inf)
     data = vec2mat(v)
     data = 0.5 * (data + data.conj().T)
 
@@ -478,7 +474,7 @@ def _steadystate_eigen(L, ss_args):
             rcm_band = sp_bandwidth(L)[0]
             logger.debug('RCM bandwidth: %i' % rcm_band)
             logger.debug('Bandwidth reduction factor: %f' %
-                         (old_band/rcm_band))
+                         (old_band / rcm_band))
 
     _eigen_start = time.time()
     eigval, eigvec = eigs(L, k=1, sigma=1e-15, tol=ss_args['tol'],
@@ -486,17 +482,17 @@ def _steadystate_eigen(L, ss_args):
     _eigen_end = time.time()
     ss_args['info']['solution_time'] = _eigen_end - _eigen_start
     if ss_args['return_info']:
-        ss_args['info']['residual_norm'] = la.norm(L*eigvec, np.inf)
+        ss_args['info']['residual_norm'] = la.norm(L * eigvec, np.inf)
     if ss_args['use_rcm']:
         eigvec = eigvec[np.ix_(rev_perm,)]
     _temp = vec2mat(eigvec)
-    data = dense2D_to_fastcsr_fmode(_temp,_temp.shape[0], _temp.shape[1])
+    data = dense2D_to_fastcsr_fmode(_temp, _temp.shape[0], _temp.shape[1])
     data = 0.5 * (data + data.H)
     out = Qobj(data, dims=dims, isherm=True)
     if ss_args['return_info']:
-        return out/out.tr(), ss_args['info']
+        return out / out.tr(), ss_args['info']
     else:
-        return out/out.tr()
+        return out / out.tr()
 
 
 def _iterative_precondition(A, n, ss_args):
@@ -514,7 +510,7 @@ def _iterative_precondition(A, n, ss_args):
                   fill_factor=ss_args['fill_factor'],
                   options=dict(ILU_MILU=ss_args['ILU_MILU']))
 
-        P_x = lambda x: P.solve(x)
+        def P_x(x): return P.solve(x)
         M = LinearOperator((n ** 2, n ** 2), matvec=P_x)
         _precond_end = time.time()
         ss_args['info']['permc_spec'] = ss_args['permc_spec']
@@ -522,7 +518,7 @@ def _iterative_precondition(A, n, ss_args):
         ss_args['info']['diag_pivot_thresh'] = ss_args['diag_pivot_thresh']
         ss_args['info']['fill_factor'] = ss_args['fill_factor']
         ss_args['info']['ILU_MILU'] = ss_args['ILU_MILU']
-        ss_args['info']['precond_time'] = _precond_end-_precond_start
+        ss_args['info']['precond_time'] = _precond_end - _precond_start
 
         if settings.debug or ss_args['return_info']:
             if settings.debug:
@@ -535,13 +531,13 @@ def _iterative_precondition(A, n, ss_args):
                 U_nnz = P.U.nnz
                 ss_args['info']['l_nnz'] = L_nnz
                 ss_args['info']['u_nnz'] = U_nnz
-                ss_args['info']['ilu_fill_factor'] = (L_nnz+U_nnz)/A.nnz
+                ss_args['info']['ilu_fill_factor'] = (L_nnz + U_nnz) / A.nnz
                 e = np.ones(n ** 2, dtype=int)
-                condest = la.norm(M*e, np.inf)
+                condest = la.norm(M * e, np.inf)
                 ss_args['info']['ilu_condest'] = condest
                 if settings.debug:
                     logger.debug('L NNZ: %i ; U NNZ: %i' % (L_nnz, U_nnz))
-                    logger.debug('Fill factor: %f' % ((L_nnz+U_nnz)/A.nnz))
+                    logger.debug('Fill factor: %f' % ((L_nnz + U_nnz) / A.nnz))
                     logger.debug('iLU condest: %f' % condest)
 
     except:
@@ -612,7 +608,7 @@ def _steadystate_iterative(L, ss_args):
         ss_args['info']['solution_time'] = ss_args['info']['iter_time']
     ss_args['info']['iterations'] = ss_iters['iter']
     if ss_args['return_info']:
-        ss_args['info']['residual_norm'] = la.norm(b - L*v, np.inf)
+        ss_args['info']['residual_norm'] = la.norm(b - L * v, np.inf)
 
     if settings.debug:
         logger.debug('Number of Iterations: %i' % ss_iters['iter'])
@@ -655,7 +651,7 @@ def _steadystate_svd_dense(L, ss_args):
     nnz = (s >= tol).sum()
     ns = vh[nnz:].conj().T
     _svd_end = time.time()
-    ss_args['info']['solution_time'] = _svd_end-_svd_start
+    ss_args['info']['solution_time'] = _svd_end - _svd_start
     if ss_args['all_states']:
         rhoss_list = []
         for n in range(ns.shape[1]):
@@ -701,7 +697,7 @@ def _steadystate_power_liouvillian(L, ss_args, has_mkl=0):
         _wbm_end = time.time()
         L = sp_permute(L, perm, [], kind)
         ss_args['info']['perm'].append('wbm')
-        ss_args['info']['wbm_time'] = _wbm_end-_wbm_start
+        ss_args['info']['wbm_time'] = _wbm_end - _wbm_start
         if settings.debug:
             wbm_band = sp_bandwidth(L)[0]
             wbm_pro = sp_profile(L)[0]
@@ -715,19 +711,19 @@ def _steadystate_power_liouvillian(L, ss_args, has_mkl=0):
         _rcm_start = time.time()
         perm2 = reverse_cuthill_mckee(L)
         _rcm_end = time.time()
-        ss_args['info']['rcm_time'] = _rcm_end-_rcm_start
+        ss_args['info']['rcm_time'] = _rcm_end - _rcm_start
         rev_perm = np.argsort(perm2)
         L = sp_permute(L, perm2, perm2, kind)
         if settings.debug:
             new_band = sp_bandwidth(L)[0]
             new_pro = sp_profile(L)[0]
             logger.debug('RCM bandwidth: %i' % new_band)
-            logger.debug('Bandwidth reduction factor: %f' % (old_band/new_band))
+            logger.debug('Bandwidth reduction factor: %f' %
+                         (old_band / new_band))
             logger.debug('RCM profile: %i' % new_pro)
-            logger.debug('Profile reduction factor: %f' % (old_pro/new_pro))
+            logger.debug('Profile reduction factor: %f' % (old_pro / new_pro))
     L.sort_indices()
     return L, perm, perm2, rev_perm, ss_args
-
 
 
 def _steadystate_power(L, ss_args):
@@ -754,7 +750,7 @@ def _steadystate_power(L, ss_args):
     else:
         has_mkl = 0
     L, perm, perm2, rev_perm, ss_args = _steadystate_power_liouvillian(L,
-                                                ss_args, has_mkl)
+                                                                       ss_args, has_mkl)
     orig_nnz = L.nnz
     # start with all ones as RHS
     v = np.ones(n, dtype=complex)
@@ -764,8 +760,9 @@ def _steadystate_power(L, ss_args):
     # Do preconditioning
     if ss_args['M'] is None and ss_args['use_precond'] and \
             ss_args['method'] in ['power-gmres',
-                                'power-lgmres', 'power-bicgstab']:
-        ss_args['M'], ss_args = _iterative_precondition(L, int(np.sqrt(n)), ss_args)
+                                  'power-lgmres', 'power-bicgstab']:
+        ss_args['M'], ss_args = _iterative_precondition(
+            L, int(np.sqrt(n)), ss_args)
         if ss_args['M'] is None:
             warnings.warn("Preconditioning failed. Continuing without.",
                           UserWarning)
@@ -783,25 +780,25 @@ def _steadystate_power(L, ss_args):
             lu = mkl_splu(L)
         else:
             lu = splu(L, permc_spec=ss_args['permc_spec'],
-              diag_pivot_thresh=ss_args['diag_pivot_thresh'],
-              options=dict(ILU_MILU=ss_args['ILU_MILU']))
+                      diag_pivot_thresh=ss_args['diag_pivot_thresh'],
+                      options=dict(ILU_MILU=ss_args['ILU_MILU']))
 
             if settings.debug and _scipy_check:
                 L_nnz = lu.L.nnz
                 U_nnz = lu.U.nnz
                 logger.debug('L NNZ: %i ; U NNZ: %i' % (L_nnz, U_nnz))
-                logger.debug('Fill factor: %f' % ((L_nnz+U_nnz)/orig_nnz))
+                logger.debug('Fill factor: %f' % ((L_nnz + U_nnz) / orig_nnz))
 
     it = 0
-    _tol = max(ss_args['tol']/10, 1e-15) # Should make this user accessible
+    _tol = max(ss_args['tol'] / 10, 1e-15)  # Should make this user accessible
     while (la.norm(L * v, np.inf) > tol) and (it < maxiter):
 
         if ss_args['method'] == 'power':
             v = lu.solve(v)
         elif ss_args['method'] == 'power-gmres':
             v, check = gmres(L, v, tol=_tol, M=ss_args['M'],
-                                x0=ss_args['x0'], restart=ss_args['restart'],
-                                maxiter=ss_args['maxiter'], callback=_iter_count)
+                             x0=ss_args['x0'], restart=ss_args['restart'],
+                             maxiter=ss_args['maxiter'], callback=_iter_count)
         elif ss_args['method'] == 'power-lgmres':
             v, check = lgmres(L, v, tol=_tol, M=ss_args['M'],
                               x0=ss_args['x0'], maxiter=ss_args['maxiter'],
@@ -821,10 +818,10 @@ def _steadystate_power(L, ss_args):
         raise Exception('Failed to find steady state after ' +
                         str(maxiter) + ' iterations')
     _power_end = time.time()
-    ss_args['info']['solution_time'] = _power_end-_power_start
+    ss_args['info']['solution_time'] = _power_end - _power_start
     ss_args['info']['iterations'] = it
     if ss_args['return_info']:
-        ss_args['info']['residual_norm'] = la.norm(L*v, np.inf)
+        ss_args['info']['residual_norm'] = la.norm(L * v, np.inf)
     if settings.debug:
         logger.debug('Number of iterations: %i' % it)
 
@@ -833,12 +830,13 @@ def _steadystate_power(L, ss_args):
 
     # normalise according to type of problem
     if sflag:
-        trow = v[::rhoss.shape[0]+1]
+        trow = v[::rhoss.shape[0] + 1]
         data = v / np.sum(trow)
     else:
         data = data / la.norm(v)
 
-    data = dense2D_to_fastcsr_fmode(vec2mat(data), rhoss.shape[0], rhoss.shape[0])
+    data = dense2D_to_fastcsr_fmode(
+        vec2mat(data), rhoss.shape[0], rhoss.shape[0])
     rhoss.data = 0.5 * (data + data.H)
     rhoss.isherm = True
     if ss_args['return_info']:
@@ -926,9 +924,11 @@ def build_preconditioner(A, c_op_list=[], **kwargs):
 
     n = int(np.sqrt(L.shape[0]))
     if ss_args['method'] == 'iterative':
-        L, perm, perm2, rev_perm, ss_args = _steadystate_LU_liouvillian(L, ss_args)
+        L, perm, perm2, rev_perm, ss_args = _steadystate_LU_liouvillian(
+            L, ss_args)
     elif ss_args['method'] == 'power':
-        L, perm, perm2, rev_perm, ss_args = _steadystate_power_liouvillian(L, ss_args)
+        L, perm, perm2, rev_perm, ss_args = _steadystate_power_liouvillian(
+            L, ss_args)
     else:
         raise Exception("Invalid preconditioning method.")
 
@@ -938,6 +938,7 @@ def build_preconditioner(A, c_op_list=[], **kwargs):
         return M, ss_args['info']
     else:
         return M
+
 
 def _pseudo_inverse_dense(L, rhoss, w=None, **pseudo_args):
     """
@@ -956,7 +957,7 @@ def _pseudo_inverse_dense(L, rhoss, w=None, **pseudo_args):
     if w is None:
         L = L
     else:
-        L = 1.0j*w*spre(tr_mat)+L
+        L = 1.0j * w * spre(tr_mat) + L
 
     if pseudo_args['method'] == 'direct':
         try:
@@ -969,15 +970,15 @@ def _pseudo_inverse_dense(L, rhoss, w=None, **pseudo_args):
         return Qobj(R, dims=L.dims)
 
     elif pseudo_args['method'] == 'numpy':
-        return Qobj(np.dot(Q,np.dot(np.linalg.pinv(L.full()),Q)), dims=L.dims)
+        return Qobj(np.dot(Q, np.dot(np.linalg.pinv(L.full()), Q)), dims=L.dims)
 
     elif pseudo_args['method'] == 'scipy':
-        #return Qobj(la.pinv(L.full()), dims=L.dims)
-        return Qobj(np.dot(Q,np.dot(la.pinv(L.full()),Q)), dims=L.dims)
+        # return Qobj(la.pinv(L.full()), dims=L.dims)
+        return Qobj(np.dot(Q, np.dot(la.pinv(L.full()), Q)), dims=L.dims)
 
     elif pseudo_args['method'] == 'scipy2':
-        #return Qobj(la.pinv2(L.full()), dims=L.dims)
-        return Qobj(np.dot(Q,np.dot(la.pinv2(L.full()),Q)), dims=L.dims)
+        # return Qobj(la.pinv2(L.full()), dims=L.dims)
+        return Qobj(np.dot(Q, np.dot(la.pinv2(L.full()), Q)), dims=L.dims)
 
     else:
         raise ValueError("Unsupported method '%s'. Use 'direct' or 'numpy'" %
@@ -998,18 +999,16 @@ def _pseudo_inverse_sparse(L, rhoss, w=None, **pseudo_args):
     tr_op_vec = operator_to_vector(tr_op)
 
     P = zcsr_kron(rhoss_vec.data, tr_op_vec.data.T)
-    I = sp.eye(N*N, N*N, format='csr')
+    I = sp.eye(N * N, N * N, format='csr')
     Q = I - P
 
-
     if w is None:
-        L =  1.0j*(1e-15)*spre(tr_op) + L
+        L = 1.0j * (1e-15) * spre(tr_op) + L
     else:
         if w != 0.0:
-            L = 1.0j*w*spre(tr_op) + L
+            L = 1.0j * w * spre(tr_op) + L
         else:
-            L =  1.0j*(1e-15)*spre(tr_op) + L
-
+            L = 1.0j * (1e-15) * spre(tr_op) + L
 
     if pseudo_args['use_rcm']:
         perm = reverse_cuthill_mckee(L.data)
@@ -1020,20 +1019,17 @@ def _pseudo_inverse_sparse(L, rhoss, w=None, **pseudo_args):
             A = L.data.tocsc()
             A.sort_indices()
 
-
-
     if pseudo_args['method'] == 'splu':
         if settings.has_mkl:
             A = L.data.tocsr()
             A.sort_indices()
-            LIQ = mkl_spsolve(A,Q.toarray())
+            LIQ = mkl_spsolve(A, Q.toarray())
         else:
 
             lu = sp.linalg.splu(A, permc_spec=pseudo_args['permc_spec'],
-                            diag_pivot_thresh=pseudo_args['diag_pivot_thresh'],
-                            options=dict(ILU_MILU=pseudo_args['ILU_MILU']))
+                                diag_pivot_thresh=pseudo_args['diag_pivot_thresh'],
+                                options=dict(ILU_MILU=pseudo_args['ILU_MILU']))
             LIQ = lu.solve(Q.toarray())
-
 
     elif pseudo_args['method'] == 'spilu':
 
@@ -1041,7 +1037,6 @@ def _pseudo_inverse_sparse(L, rhoss, w=None, **pseudo_args):
                              fill_factor=pseudo_args['fill_factor'],
                              drop_tol=pseudo_args['drop_tol'])
         LIQ = lu.solve(Q.toarray())
-
 
     else:
         raise ValueError("unsupported method '%s'" % method)
@@ -1106,9 +1101,9 @@ def pseudo_inverse(L, rhoss=None, w=None, sparse=True,  **kwargs):
             pseudo_args[key] = kwargs[key]
         else:
             raise Exception(
-                "Invalid keyword argument '"+key+"' passed to pseudo_inverse.")
+                "Invalid keyword argument '" + key + "' passed to pseudo_inverse.")
     if 'method' not in kwargs.keys():
-        pseudo_args['method']='splu'
+        pseudo_args['method'] = 'splu'
 
     # Set column perm to NATURAL if using RCM and not specified by user
     if pseudo_args['use_rcm'] and ('permc_spec' not in kwargs.keys()):
@@ -1118,7 +1113,7 @@ def pseudo_inverse(L, rhoss=None, w=None, sparse=True,  **kwargs):
         rhoss = steadystate(L, **pseudo_args)
 
     if sparse:
-        return _pseudo_inverse_sparse(L,rhoss, w=w,  **pseudo_args)
+        return _pseudo_inverse_sparse(L, rhoss, w=w,  **pseudo_args)
     else:
         pseudo_args['method'] = pseudo_args['method'] if pseudo_args['method'] != 'splu' else 'direct'
         return _pseudo_inverse_dense(L, rhoss, w=w, **pseudo_args)
