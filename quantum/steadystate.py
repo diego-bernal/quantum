@@ -62,8 +62,8 @@
 #    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###############################################################################
 """
-This module contains functions for solving for the steady state density matrix of
-open quantum systems defined by a Liouvillian or Hamiltonian and a list of
+This module contains functions for solving for the steady state density matrix
+of open quantum systems defined by a Liouvillian or Hamiltonian and a list of
 collapse operators.
 """
 
@@ -118,8 +118,8 @@ def _default_steadystate_args():
                 'all_states': False, 'M': None, 'x0': None, 'drop_tol': 1e-4,
                 'fill_factor': 100, 'diag_pivot_thresh': None, 'maxiter': 1000,
                 'tol': 1e-12, 'permc_spec': 'COLAMD', 'ILU_MILU': 'smilu_2',
-                'restart': 20, 'return_info': False, 'info': _empty_info_dict(),
-                'verbose': False}
+                'restart': 20, 'return_info': False,
+                'info': _empty_info_dict(), 'verbose': False}
 
     return def_args
 
