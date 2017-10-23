@@ -28,7 +28,7 @@
 #    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###############################################################################
 #
-# The functions in these module were inspired by:
+# The functions in this module were inspired by:
 # QuTiP: Quantum Toolbox in Python.
 #
 #    Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
@@ -62,12 +62,7 @@
 #    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###############################################################################
 """
-Command line output of information on QuTiP and dependencies.
-
-Note the functions in these module were inspired by:
-QuTip: Quantum Toolbox in Python.
-Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
-All rights reserved.
+Command line output of information on Quantum and dependencies.
 """
 
 __all__ = ['about']
@@ -92,7 +87,7 @@ def about():
     print("")
     print("Quantum: Quantum dynamics solver")
     print("Copyright (c) 2017 and later.")
-    print(("D. N. Bernal-Garcia"))
+    print(("D. N. Bernal-García"))
     print("")
     print("Quantum Version:    %s" % __version__)
     print("QuTiP Version:      %s" % qutip.__version__)

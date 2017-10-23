@@ -28,7 +28,7 @@
 #    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ###############################################################################
 #
-# The functions in these module were inspired by:
+# The functions in this module were inspired by:
 # QuTiP: Quantum Toolbox in Python.
 #
 #    Copyright (c) 2011 and later, Paul D. Nation and Robert J. Johansson.
@@ -115,22 +115,22 @@ def mesolve(H, rho0, tlist, c_ops=[], e_ops=[], args={}, options=None,
     Master equation evolution of a density matrix for a given Hamiltonian and
     set of collapse operators, or a Liouvillian.
 
-    Evolve the state vector or density matrix ('rho0') using a given
-    Hamiltonian ('H') and an [optional] set of collapse operators
-    ('c_ops'), by integrating the set of ordinary differential equations
+    Evolve the state vector or density matrix (`rho0`) using a given
+    Hamiltonian (`H`) and an [optional] set of collapse operators
+    (`c_ops`), by integrating the set of ordinary differential equations
     that define the system. In the absence of collapse operators the system is
     evolved according to the unitary evolution of the Hamiltonian.
 
     The output is either the state vector at arbitrary points in time
-    ('tlist'), or the expectation values of the supplied operators
-    ('e_ops'). If e_ops is a callback function, it is invoked for each
+    (`tlist`), or the expectation values of the supplied operators
+    (`e_ops`). If e_ops is a callback function, it is invoked for each
     time in `tlist` with time and the state as arguments, and the function
     does not use any return values.
 
-    If either 'H' or the Qobj elements in 'c_ops' are superoperators, they
+    If either `H` or the Qobj elements in `c_ops` are superoperators, they
     will be treated as direct contributions to the total system Liouvillian.
     This allows to solve master equations that are not on standard Lindblad
-    form by passing a custom Liouvillian in place of either the 'H' or 'c_ops'
+    form by passing a custom Liouvillian in place of either the `H` or `c_ops`
     elements.
 
     **Time-dependent operators**

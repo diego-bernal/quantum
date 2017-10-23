@@ -1,7 +1,7 @@
 Quantum: Quantum dynamics solver
 ================================
 
-[D. N. Bernal-García](http://github.com/diego-bernal)
+[Diego Nicolás Bernal-García](http://github.com/diego-bernal)
 
 Quantum is open-source software for calculating the dynamics of quantum systems. The Quantum library is strongly based and inspired by QuTip: Quantum Toolbox in Python. It takes advantange of the Numpy, Scipy, and Cython packages, as well as Matplotlib.
 
@@ -11,13 +11,17 @@ Quantum differs from QuTip in two essencial features:
 
 Quantum is freely available for use and/or modification.
 
-
 Demos
 -----
 A selection of demonstration notebooks is available here: [github.com/diego-bernal/quantum-notebooks](http://github.com/diego-bernal/quantum-notebooks).
 
+License
+-------
+[![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
+
+You are free to use this software, with or without modification, provided that the conditions listed in the LICENSE file are satisfied.
+
 
 REMARKS
 -------
-
-This version of Quantum pretends to replace the minimal QuTip packages. So, it uses the excellent Qobj class for all its purposes.
+This Quantum library is strongly based and inspired in the QuTip packages. So, it uses the excellent Qobj class for all its purposes.

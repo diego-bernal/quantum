@@ -66,6 +66,8 @@ This module contains functions for solving for the steady state density matrix
 of open quantum systems defined by a Liouvillian or Hamiltonian and a list of
 collapse operators.
 """
+# The only substantial change is the use of my liouvillian function!
+
 
 __all__ = ['steadystate', 'steady', 'build_preconditioner',
            'pseudo_inverse']
@@ -958,6 +960,7 @@ def _pseudo_inverse_dense(L, rhoss, w=None, **pseudo_args):
         L = L
     else:
         L = 1.0j * w * spre(tr_mat) + L
+    # It's possible that there's an error here because of the use of the spre function.
 
     if pseudo_args['method'] == 'direct':
         try:
